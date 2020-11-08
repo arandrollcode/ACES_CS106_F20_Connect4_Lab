@@ -32,12 +32,12 @@ def get_next_open_row(board, col):
             return row-1
 
 def print_board(board):
-    print('-----------------')
+    print('-------------------------')
     
     for row in range(ROW_COUNT):
         print('| {0} {1} {2} {3} {4} {5} {6} |'.format(board[0][row], board[1][row], board[2][row], board[3][row], board[4][row], board[5][row], board[6][row]))
 
-    print('-----------------')
+    print('-------------------------')
     print()
     
 def winning_move(board, piece):
@@ -69,16 +69,25 @@ def winning_move(board, piece):
 
 def draw_board(board):
     ## TODO: Draw a large WHITE rectangle (7 SQUARESIZE Wide, 6 SQUARESIZE Tall)
-    
+    pygame.draw.rect(screen, BLUE, (0, SQUARESIZE, 7*SQUARESIZE, 6*SQUARESIZE))
     
     b_copy = [list(board[col]) for col in range(COLUMN_COUNT)]
     for col in b_copy:
         col.reverse()
 
     ## TODO: Draw the 42 circles based on b_copy
+    for x in range(COLUMN_COUNT):
+        for y in range(ROW_COUNT):
+            if board[x][y] == 0:
+                pygame.draw.circle(screen, YELLOW, ((x+1)*SQUARESIZE-SQUARESIZE//2, (y+2)*SQUARESIZE-SQUARESIZE//2), RADIUS)
+            if board[x][y] == 1:
+                pygame.draw.circle(screen, RED, ((x+1)*SQUARESIZE-SQUARESIZE//2, (y+2)*SQUARESIZE-SQUARESIZE//2), RADIUS)
+            if board[x][y] == 2:
+                pygame.draw.circle(screen, BLACK, ((x+1)*SQUARESIZE-SQUARESIZE//2, (y+2)*SQUARESIZE-SQUARESIZE//2), RADIUS)
 
 
     ## TODO: Update the display
+    pygame.display.update()
 
 ##----------------------------------------------------------------------------##
 
@@ -122,7 +131,7 @@ while not game_over:
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             pygame.draw.rect(screen, WHITE, (0,0, width, SQUARESIZE))
-            #print(event.pos)
+
             # Ask for Player 1 Input
             if turn == 0:
                 posx = event.pos[0]
@@ -134,7 +143,7 @@ while not game_over:
 
                     if winning_move(board, 1):
                         label = myfont.render("Player 1 wins!!", 1, RED)
-                        screen.blit(label, (40,10))
+                        screen.blit(label, (20,10))
                         game_over = True
             ## Ask for Player 2 Input
             else:
@@ -147,7 +156,7 @@ while not game_over:
 
                     if winning_move(board, 2):
                         label = myfont.render("Player 2 wins!!", 2, BLACK)
-                        screen.blit(label, (40,10))
+                        screen.blit(label, (20,10))
                         game_over = True
                         
             print_board(board)
@@ -172,5 +181,3 @@ while not game_over:
             if game_over:
                 ## OPTIONAL TODO: Display a tkinter message box asking the user if they want to reset for a new game.
                 pygame.time.wait(3000)
-
-                

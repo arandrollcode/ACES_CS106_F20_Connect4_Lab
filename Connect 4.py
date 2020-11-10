@@ -1,7 +1,7 @@
 import pygame
 import sys
 import math
-import tkinter
+import tkinter.messagebox
 
 BLUE = (0,0,255)
 BLACK = (0,0,0)
@@ -29,7 +29,7 @@ def is_valid_column(board, col):
 def get_next_open_row(board, col):
     for row in range(ROW_COUNT, 0, -1):
         if board[col][row-1] == 0:
-            return row-1
+            return row-1 
 
 def print_board(board):
     print('-------------------------')
@@ -44,25 +44,25 @@ def winning_move(board, piece):
     # Check horizontal locations for win
     for c in range(COLUMN_COUNT-3):
         for r in range(ROW_COUNT):
-            if board[c][r] == piece and board[c+1][r] == piece and board[c+2][r] == piece and board[c+3][r] == piece:
+            if board[c][r] == board[c+1][r] == board[c+2][r] == board[c+3][r] == piece:
                 return True
 
     # Check vertical locations for win
     for c in range(COLUMN_COUNT):
         for r in range(ROW_COUNT-3):
-            if board[c][r] == piece and board[c][r+1] == piece and board[c][r+2] == piece and board[c][r+3] == piece:
+            if board[c][r] == board[c][r+1] == board[c][r+2] == board[c][r+3] == piece:
                 return True
 
-    # Check positively sloped diaganols
+    # Check positively sloped diagonals
     for c in range(COLUMN_COUNT-3):
         for r in range(ROW_COUNT-3):
-            if board[c][r+3] == piece and board[c+1][r+2] == piece and board[c+2][r+1] == piece and board[c+3][r] == piece:
+            if board[c][r+3] == board[c+1][r+2] == board[c+2][r+1] == board[c+3][r] == piece:
                 return True
 
-    # Check negatively sloped diaganols
+    # Check negatively sloped diagonals
     for c in range(COLUMN_COUNT-3):
         for r in range(ROW_COUNT-3):
-            if board[c][r] == piece and board[c+1][r+1] == piece and board[c+2][r+2] == piece and board[c+3][r+3] == piece:
+            if board[c][r] == board[c+1][r+1] == board[c+2][r+2] == board[c+3][r+3] == piece:
                 return True
 
     return False
@@ -92,7 +92,7 @@ def draw_board(board):
 ##----------------------------------------------------------------------------##
 
 board = create_board()
-print_board(board)
+#print_board(board)
 game_over = False
 turn = 0
 
@@ -159,7 +159,7 @@ while not game_over:
                         screen.blit(label, (20,10))
                         game_over = True
                         
-            print_board(board)
+            #print_board(board)
             draw_board(board)
 
             turn += 1
@@ -172,12 +172,13 @@ while not game_over:
                     flag = True
 
             if flag == False:
+                pygame.draw.rect(screen, WHITE, (0,0, width, SQUARESIZE))
                 label = myfont.render("Tie Game!!", 2, BLUE)
-                screen.blit(label, (40,10))
+                screen.blit(label, (130,10))
                 game_over = True
-                print_board(board)
+                #print_board(board)
                 draw_board(board)
 
             if game_over:
                 ## OPTIONAL TODO: Display a tkinter message box asking the user if they want to reset for a new game.
-                pygame.time.wait(3000)
+                pygame.time.wait(1000)
